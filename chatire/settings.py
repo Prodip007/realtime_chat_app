@@ -37,6 +37,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # Third party packages
+    'rest_framework',
+    'rest_framework.authtoken',
+    'djoser',
+    
 ]
 
 MIDDLEWARE = [
@@ -66,6 +72,12 @@ TEMPLATES = [
         },
     },
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+}
 
 WSGI_APPLICATION = 'chatire.wsgi.application'
 
