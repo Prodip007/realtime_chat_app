@@ -1,11 +1,23 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import Chat from '@/components/Chat'
+import UserAuth from '@/components/UserAuth'
 
 const routes = [
   {
     path: '/',
     name: 'home',
     component: HomeView
+  },
+  {
+    path:'/chat',
+    name: 'Chat',
+    component: Chat
+  },
+  {
+    path: '/auth',
+    name: 'UserAuth',
+    component: UserAuth
   },
   {
     path: '/about',
@@ -20,6 +32,14 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  if(sessionStorage.getItem('authToken') != null || to.path == '/auth'){
+    next()
+  } else {
+    next('/auth')
+  }
 })
 
 export default router
