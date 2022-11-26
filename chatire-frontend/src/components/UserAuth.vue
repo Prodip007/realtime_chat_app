@@ -1,71 +1,84 @@
 <template>
-  <div>
-    <section class="signin-form-wrapper">
-      <form>
-        <!-- Email input -->
-        <div class="form-outline mb-4">
-          <input type="email" id="form2Example1" class="form-control" />
-          <label class="form-label" for="form2Example1">Email address</label>
-        </div>
+  <div class="login-page">
+    <section>
+      <div class="container">
+        <h1 class="text-center">Welcome to Chatire!</h1>
+        <div id="auth-container" class="row">
+          <div class="col-sm-4 offset-sm-4">
+            <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" id="signup-tab" data-toggle="tab" href="#signup" role="tab" aria-controls="signup" aria-selected="true">Sign Up</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="signin-tab" data-toggle="tab" href="#signin" role="tab" aria-controls="signin" aria-selected="false">Sign In</a>
+              </li>
+            </ul>
 
-        <!-- Password input -->
-        <div class="form-outline mb-4">
-          <input type="password" id="form2Example2" class="form-control" />
-          <label class="form-label" for="form2Example2">Password</label>
-        </div>
+            <div class="tab-content" id="myTabContent">
+              <div class="tab-pane fade show active" id="signup" role="tabpanel" aria-labelledby="signin-tab">
+                <form @submit.prevent="signUp">
+                  <div class="form-group">
+                    <input v-model="email" type="email" class="form-control" id="email" placeholder="Email Address" required />
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group col-md-6">
+                      <input v-model="username" type="text" class="form-control" id="username" placeholder="Username" required />
+                    </div>
+                    <div class="form-group col-md-6">
+                      <input v-model="password" type="password" class="form-control" id="password" placeholder="Password" required />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="toc" required />
+                      <label class="form-check-label" for="gridCheck"> Accept terms and Conditions </label>
+                    </div>
+                  </div>
+                  <button type="submit" class="btn btn-block btn-primary">Sign up</button>
+                </form>
+              </div>
 
-        <!-- 2 column grid layout for inline styling -->
-        <div class="row mb-4">
-          <div class="col d-flex justify-content-center">
-            <!-- Checkbox -->
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" id="form2Example31" checked />
-              <label class="form-check-label" for="form2Example31"> Remember me </label>
+              <div class="tab-pane fade" id="signin" role="tabpanel" aria-labelledby="signin-tab">
+                <form @submit.prevent="signIn">
+                  <div class="form-group">
+                    <input v-model="username" type="text" class="form-control" id="username" placeholder="Username" required />
+                  </div>
+                  <div class="form-group">
+                    <input v-model="password" type="password" class="form-control" id="password" placeholder="Password" required />
+                  </div>
+                  <button type="submit" class="btn btn-block btn-primary">Sign in</button>
+                </form>
+              </div>
             </div>
           </div>
-
-          <div class="col">
-            <!-- Simple link -->
-            <a href="#!">Forgot password?</a>
-          </div>
         </div>
-
-        <!-- Submit button -->
-        <button type="button" class="btn btn-primary btn-block mb-4">Sign in</button>
-
-        <!-- Register buttons -->
-        <div class="text-center">
-          <p>Not a member? <a href="#!">Register</a></p>
-          <p>or sign up with:</p>
-          <button type="button" class="btn btn-link btn-floating mx-1">
-            <i class="fab fa-facebook-f"></i>
-          </button>
-
-          <button type="button" class="btn btn-link btn-floating mx-1">
-            <i class="fab fa-google"></i>
-          </button>
-
-          <button type="button" class="btn btn-link btn-floating mx-1">
-            <i class="fab fa-twitter"></i>
-          </button>
-
-          <button type="button" class="btn btn-link btn-floating mx-1">
-            <i class="fab fa-github"></i>
-          </button>
-        </div>
-      </form>
+      </div>
     </section>
   </div>
 </template>
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      email: "",
+      username: "",
+      password: "",
+    };
+  },
+};
 </script>
 <style>
-
 .signin-form-wrapper {
   width: 100%;
   max-width: 330px;
   padding: 15px;
   margin: 0 auto;
 }
+#auth-container {
+    margin-top: 50px;
+  }
+
+  .tab-content {
+    padding-top: 20px;
+  }
 </style>
