@@ -35,7 +35,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  if(sessionStorage.getItem('authToken') != null || to.path == '/auth'){
+  if(localStorage.getItem('authToken') != null || to.path == '/auth'){
     next()
   } else {
     next('/auth')

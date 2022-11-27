@@ -7,10 +7,14 @@
           <div class="col-sm-4 offset-sm-4">
             <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
               <li class="nav-item">
-                <a class="nav-link active" id="signup-tab" data-toggle="tab" href="#signup" role="tab" aria-controls="signup" aria-selected="true">Sign Up</a>
+                <a class="nav-link active" id="signup-tab" data-toggle="tab" href="#signup" role="tab" aria-controls="signup" aria-selected="true"
+                  >Sign Up</a
+                >
               </li>
               <li class="nav-item">
-                <a class="nav-link" id="signin-tab" data-toggle="tab" href="#signin" role="tab" aria-controls="signin" aria-selected="false">Sign In</a>
+                <a class="nav-link" id="signin-tab" data-toggle="tab" href="#signin" role="tab" aria-controls="signin" aria-selected="false"
+                  >Sign In</a
+                >
               </li>
             </ul>
 
@@ -66,54 +70,57 @@ export default {
     };
   },
   methods: {
-    signUp () {
-      console.log('Sign Up')
+    signUp() {
+      console.log("Sign Up");
 
       let credentials = {
         email: this.email,
         username: this.username,
-        password: this.password
-      }
+        password: this.password,
+      };
 
       let options = {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(credentials),
-      }
+      };
 
-      fetch('http://localhost:8000/auth/users/', options)
-      .then((result) => alert('Your account has been created. You will be signed in automatically'))
-      this.signIn()
+      fetch("http://localhost:8000/auth/users/", options).then((result) =>
+        alert("Your account has been created. You will be signed in automatically")
+      );
+      this.signIn();
     },
-    signIn () {
-      console.log('Sign In')
+    signIn() {
+      console.log("Sign In");
 
       let credentials = {
         username: this.username,
-        password: this.password
-      }
+        password: this.password,
+      };
 
       let options = {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(credentials),
-      }
+      };
 
-      fetch('http://localhost:8000/auth/token/login/', options)
-      .then((result) => result.json())
-      .then((data) => {
-        sessionStorage.setItem('authToken', data.auth_token)
-        sessionStorage.setItem('username', this.username)
-        this.$router.push('/chats')
-      })
-
-
-    }
-  }
+      fetch("http://localhost:8000/auth/token/login/", options)
+        .then((result) => result.json())
+        .then((data) => {
+          localStorage.setItem("authToken", data.auth_token);
+          localStorage.setItem("username", this.username);
+          console.log("LocalStorage");
+        })
+        .then((data) => {
+          this.$router.push("chats/");
+          console.log("gets pushed");
+        });
+    },
+  },
 };
 </script>
 <style>
@@ -124,10 +131,10 @@ export default {
   margin: 0 auto;
 }
 #auth-container {
-    margin-top: 50px;
-  }
+  margin-top: 50px;
+}
 
-  .tab-content {
-    padding-top: 20px;
-  }
+.tab-content {
+  padding-top: 20px;
+}
 </style>
