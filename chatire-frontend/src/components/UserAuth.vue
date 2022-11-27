@@ -18,14 +18,14 @@
               <div class="tab-pane fade show active" id="signup" role="tabpanel" aria-labelledby="signin-tab">
                 <form @submit.prevent="signUp">
                   <div class="form-group">
-                    <input v-model="email" type="email" class="form-control" id="email" placeholder="Email Address" required />
+                    <input v-model="email" type="email" class="form-control" id="userEmail" placeholder="Email Address" required />
                   </div>
                   <div class="form-row">
                     <div class="form-group col-md-6">
-                      <input v-model="username" type="text" class="form-control" id="username" placeholder="Username" required />
+                      <input v-model="username" type="text" class="form-control" id="userName" placeholder="Username" required />
                     </div>
                     <div class="form-group col-md-6">
-                      <input v-model="password" type="password" class="form-control" id="password" placeholder="Password" required />
+                      <input v-model="password" type="password" class="form-control" id="userPassword" placeholder="Password" required />
                     </div>
                   </div>
                   <div class="form-group">
@@ -65,6 +65,55 @@ export default {
       password: "",
     };
   },
+  methods: {
+    signUp () {
+      console.log('Sign Up')
+
+      let credentials = {
+        email: this.email,
+        username: this.username,
+        password: this.password
+      }
+
+      let options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(credentials),
+      }
+
+      fetch('http://localhost:8000/auth/users/', options)
+      .then((result) => alert('Your account has been created. You will be signed in automatically'))
+      this.signIn()
+    },
+    signIn () {
+      console.log('Sign In')
+
+      let credentials = {
+        username: this.username,
+        password: this.password
+      }
+
+      let options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(credentials),
+      }
+
+      fetch('http://localhost:8000/auth/token/login/', options)
+      .then((result) => result.json())
+      .then((data) => {
+        sessionStorage.setItem('authToken', data.auth_token)
+        sessionStorage.setItem('username', this.username)
+        this.$router.push('/chats')
+      })
+
+
+    }
+  }
 };
 </script>
 <style>
