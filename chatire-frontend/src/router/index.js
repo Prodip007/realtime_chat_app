@@ -9,8 +9,13 @@ const routes = [
     name: 'home',
     component: HomeView
   },
+  // {
+  //   path:'/chats',
+  //   name: 'Chat',
+  //   component: Chat
+  // },
   {
-    path:'/chats',
+    path: '/chats/:uri?',
     name: 'Chat',
     component: Chat
   },
