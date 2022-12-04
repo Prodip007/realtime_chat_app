@@ -19,25 +19,22 @@
                   <span class="card-text speech-bubble speech-bubble-user float-right text-white subtle-blue-gradient"> Whatsup, another chat app? </span>
                 </div>
                 <div class="col-sm-2">
-                    <img class="rounded-circle" src="http://placehold.it/40/333333/fff&text=A" />
+                  <img class="rounded-circle" src="http://placehold.it/40/333333/fff&text=A" />
                 </div>
               </div>
               <div class="row chat-section">
                 <div class="col-sm-2">
-                    <img class="rounded-circle" src="http://placehold.it/40/f16000/fff&text=D" />
+                  <img class="rounded-circle" src="http://placehold.it/40/f16000/fff&text=D" />
                 </div>
                 <div class="col-sm-7">
-                    <p class="card-text speech-bubble speech-bubble-peer">
-                        Yes this is Chatire, it's pretty cool and it's Open source
-                    and it was built with Django and Vue JS so we can tweak it to our satisfaction.
-                    </p>
+                  <p class="card-text speech-bubble speech-bubble-peer">
+                    Yes this is Chatire, it's pretty cool and it's Open source and it was built with Django and Vue JS so we can tweak it to our satisfaction.
+                  </p>
                 </div>
               </div>
               <div class="row chat-section">
                 <div class="col-sm-7 offset-3">
-                    <p class="card-text speech-bubble speech-bubble-user float-right text-white subtle-blue-gradient">
-                    Okay i'm already hacking around let me see what i can do to this thing.
-                  </p>
+                  <p class="card-text speech-bubble speech-bubble-user float-right text-white subtle-blue-gradient">Okay i'm already hacking around let me see what i can do to this thing.</p>
                 </div>
                 <div class="col-sm-2">
                   <img class="rounded-circle" src="http://placehold.it/40/333333/fff&text=A" />
@@ -47,26 +44,23 @@
           </div>
           <div class="card-footer text-muted">
             <form>
-                <div class="row">
-                    <div class="col-sm-10">
-                        <input type="text" placeholder="Type a message">
-                    </div>
-                    <div class="col-sm-2">
-                        <button class="btn btn-primary">Send</button>
-                    </div>
+              <div class="row">
+                <div class="col-sm-10">
+                  <input type="text" placeholder="Type a message" />
                 </div>
+                <div class="col-sm-2">
+                  <button class="btn btn-primary">Send</button>
+                </div>
+              </div>
             </form>
           </div>
         </div>
         <div v-else>
-            <h3 class="text-center">Welcome!</h3>
-            <br>
-            <p class="text-center">
-                To start chatting with friends click on the button below, it'll start a new chat session
-            and then you can invite your friends over to chat!
-            </p>
-            <br>
-            <button @click="startChatSession" class="btn btn-primary btn-lg btn-block">Start Chatting</button>
+          <h3 class="text-center">Welcome!</h3>
+          <br />
+          <p class="text-center">To start chatting with friends click on the button below, it'll start a new chat session and then you can invite your friends over to chat!</p>
+          <br />
+          <button @click="startChatSession" class="btn btn-primary btn-lg btn-block">Start Chatting</button>
         </div>
       </div>
     </div>
@@ -74,21 +68,43 @@
 </template>
 <script>
 export default {
-    data() {
-        return {
-            sessionStarted: false
-        }
+  data() {
+    return {
+      sessionStarted: false,
+      auth_token: null,
+    };
+  },
+  created() {
+    this.username = localStorage.getItem("username");
+    this.auth_token = localStorage.getItem("authToken");
+    // console.log(localStorage)
+  },
+  methods: {
+    startChatSession() {
+      this.sessionStarted = true;
+      this.$router.push("/chats/chat_url/");
     },
-    created() {
-        this.username = sessionStorage.getItem('username')
-    },
-    methods: {
-        startChatSession() {
-            this.sessionStarted = true
-            this.$router.push('/chats/chat_url/')
-        }
-    }
+    
+    startChatSession() {
+      console.log(this.auth_token)
+      let options = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+          'Authorization': `Token ${this.auth_token}`
 
+        },
+        body: JSON.stringify(this.locationData),
+      };
+      fetch('http://localhost:8000/api/chats/', options)
+      .then((result) => result.json())
+      .then((data) => {
+        console.log('A new session has been created')
+        this.sessionStarted = true
+        this.$router.push(`/chats/${data.uri}`)
+      })
+    },
+  },
 };
 </script>
 <style lang="scss">
@@ -144,7 +160,7 @@ li {
 }
 
 .subtle-blue-gradient {
-  background: linear-gradient(45deg,#004bff, #007bff);
+  background: linear-gradient(45deg, #004bff, #007bff);
 }
 
 .speech-bubble-user:after {
@@ -189,5 +205,4 @@ li {
   margin-bottom: -20px;
   padding-bottom: 10px;
 }
-
 </style>
