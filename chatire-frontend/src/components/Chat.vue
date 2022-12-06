@@ -6,12 +6,15 @@
           <div class="card-header text-white text-center font-weigth-bold subtle-blue-gradient">Share this page url to invite new friends</div>
           <div class="card-body">
             <div class="container chat-body">
-              <div class="row chat-session">
+              <div v-for="message in messages" :key="message.id" class="row chat-session">
                 <div class="col-sm-2">
                   <img class="rounded-circle" src="http://placehold.it/40/f16000/fff&text=D" alt="" />
                 </div>
                 <div class="col-sm-7">
-                  <span class="card-text speech-bubble speech-bubble-peer">Hello!</span>
+                  <span class="card-text speech-bubble speech-bubble-peer">{{ message.message }}</span>
+                </div>
+                <div class="col-sm-2">
+                  <img class="rounded-circle" src="https://via.placeholder.com/150" />
                 </div>
               </div>
               <div class="row chat-section">
@@ -19,7 +22,8 @@
                   <span class="card-text speech-bubble speech-bubble-user float-right text-white subtle-blue-gradient"> Whatsup, another chat app? </span>
                 </div>
                 <div class="col-sm-2">
-                  <img class="rounded-circle" src="http://placehold.it/40/333333/fff&text=A" />
+                  <img class="rounded-circle" src="`https://via.placeholder.com/40/007bff/fff?text=${}`" />
+                  <!-- <img class="rounded-circle" src="http://placehold.it/40/333333/fff&text=A" /> -->
                 </div>
               </div>
               <div class="row chat-section">
