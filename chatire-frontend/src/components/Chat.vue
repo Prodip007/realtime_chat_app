@@ -7,43 +7,24 @@
           <div class="card-body">
             <div class="container chat-body">
               <div v-for="message in messages" :key="message.id" class="row chat-session">
-                <div class="col-sm-2">
-                  <img class="rounded-circle" src="http://placehold.it/40/f16000/fff&text=D" alt="" />
-                </div>
-                <div class="col-sm-7">
-                  <span class="card-text speech-bubble speech-bubble-peer">{{ message.message }}</span>
-                </div>
-                <div class="col-sm-2">
-                  <img class="rounded-circle" src="https://via.placeholder.com/150" />
-                </div>
+                <template v-if="username == message.user.username">
+                  <div class="col-sm-7 offset-3">
+                    <span class="card-text speech-bubble speech-bubble-user float-right text-white subtle-blue-gradient">{{ message.message }}</span>
+                  </div>
+                  <div class="col-sm-2">
+                    <img class="rounded-circle" :src="`https://via.placeholder.com/40/0000FF/ffffff?text=${message.user.username[0].toUpperCase()}`" alt="" />
+                  </div>
+                </template>
+                <template v-else>
+                  <div class="col-sm-2">
+                    <img class="rounded-circle" :src="`https://via.placeholder.com/40/333333/ffffff?text=${message.user.username[0].toUpperCase()}`" />
+                  </div>
+                  <div class="col-sm-7">
+                    <span class="card-text speech-bubble speech-bubble-peer"> {{ message.message }} </span>
+                  </div>
+                </template>
               </div>
-              <div class="row chat-section">
-                <div class="col-sm-7 offset-3">
-                  <span class="card-text speech-bubble speech-bubble-user float-right text-white subtle-blue-gradient"> Whatsup, another chat app? </span>
-                </div>
-                <div class="col-sm-2">
-                  <img class="rounded-circle" src="`https://via.placeholder.com/40/007bff/fff?text=${}`" />
-                  <!-- <img class="rounded-circle" src="http://placehold.it/40/333333/fff&text=A" /> -->
-                </div>
-              </div>
-              <div class="row chat-section">
-                <div class="col-sm-2">
-                  <img class="rounded-circle" src="http://placehold.it/40/f16000/fff&text=D" />
-                </div>
-                <div class="col-sm-7">
-                  <p class="card-text speech-bubble speech-bubble-peer">
-                    Yes this is Chatire, it's pretty cool and it's Open source and it was built with Django and Vue JS so we can tweak it to our satisfaction.
-                  </p>
-                </div>
-              </div>
-              <div class="row chat-section">
-                <div class="col-sm-7 offset-3">
-                  <p class="card-text speech-bubble speech-bubble-user float-right text-white subtle-blue-gradient">Okay i'm already hacking around let me see what i can do to this thing.</p>
-                </div>
-                <div class="col-sm-2">
-                  <img class="rounded-circle" src="http://placehold.it/40/333333/fff&text=A" />
-                </div>
-              </div>
+
             </div>
           </div>
           <div class="card-footer text-muted">
@@ -76,6 +57,10 @@ export default {
     return {
       sessionStarted: false,
       auth_token: null,
+      messages: [
+        {"status":"SUCCESS","uri":"040213b14a02451","message":"Hello!","user":{"id":1,"username":"Prodip","email":"osaetindaniel@gmail.com","first_name":"","last_name":""}},
+        {"status":"SUCCESS","uri":"040213b14a02451","message":"Hey whatsup! i dey","user":{"id":2,"username":"daniel","email":"","first_name":"","last_name":""}}
+      ]
     };
   },
   created() {
@@ -88,25 +73,25 @@ export default {
       this.sessionStarted = true;
       this.$router.push("/chats/chat_url/");
     },
-    
+
     startChatSession() {
-      console.log(this.auth_token)
+      console.log(this.auth_token);
+      console.log(this.username)
       let options = {
         method: "POST",
         headers: {
           "Content-Type": "application/json;charset=utf-8",
-          'Authorization': `Token ${this.auth_token}`
-
+          Authorization: `Token ${this.auth_token}`,
         },
         body: JSON.stringify(this.locationData),
       };
-      fetch('http://localhost:8000/api/chats/', options)
-      .then((result) => result.json())
-      .then((data) => {
-        console.log('A new session has been created')
-        this.sessionStarted = true
-        this.$router.push(`/chats/${data.uri}`)
-      })
+      fetch("http://localhost:8000/api/chats/", options)
+        .then((result) => result.json())
+        .then((data) => {
+          console.log("A new session has been created");
+          this.sessionStarted = true;
+          this.$router.push(`/chats/${data.uri}`);
+        });
     },
   },
 };
