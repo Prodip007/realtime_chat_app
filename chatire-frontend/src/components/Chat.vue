@@ -65,6 +65,10 @@ export default {
   created() {
     this.username = localStorage.getItem("username");
     this.auth_token = localStorage.getItem("authToken");
+    
+    if (this.$route.params.uri) {
+      this.joinChatSession()
+    }
   },
   methods: {
     // startChatSession() {
@@ -105,6 +109,41 @@ export default {
       .then((data) => {
         this.messages.push(data)
         this.message = ''
+      })
+    },
+    joinChatSession() {
+      const data = {
+        username: this.username
+      }
+      let options = {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+          Authorization: `Token ${this.auth_token}`,
+        },
+        body: JSON.stringify(data)
+      };
+      fetch(`http://localhost:8000/api/chats/${this.$route.params.uri}/`, options)
+      .then((result) => result.json())
+      .then((data) => {
+        const user = data.members.find((member) => member.username == this.username)
+        if (user) {
+          this.sessionStarted = true
+          this.fetchChatSessionHistory()
+        }
+      })
+    },
+    fetchChatSessionHistory() {
+      let options = {
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+          Authorization: `Token ${this.auth_token}`,
+        },
+      };
+      fetch(`http://127.0.0.1:8000/api/chats/${this.$route.params.uri}/messages/`, options)
+      .then((result) => result.json())
+      .then((data) => {
+        this.messages = data.messages
       })
     }
   },
