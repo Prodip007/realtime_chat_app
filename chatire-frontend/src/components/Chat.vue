@@ -7,7 +7,7 @@
           <div class="card-body">
             <div class="container chat-body">
               <div v-for="message in messages" :key="message.id" class="row chat-session">
-                <template v-if="username == message.user.username">
+                <template v-if="this.username == message.user.username">
                   <div class="col-sm-7 offset-3">
                     <span class="card-text speech-bubble speech-bubble-user float-right text-white subtle-blue-gradient">{{ message.message }}</span>
                   </div>
@@ -24,14 +24,13 @@
                   </div>
                 </template>
               </div>
-
             </div>
           </div>
           <div class="card-footer text-muted">
-            <form>
+            <form @submit.prevent="postMessage()">
               <div class="row">
                 <div class="col-sm-10">
-                  <input type="text" placeholder="Type a message" />
+                  <input v-model="message" type="text" placeholder="Type a message" />
                 </div>
                 <div class="col-sm-2">
                   <button class="btn btn-primary">Send</button>
@@ -52,21 +51,20 @@
   </div>
 </template>
 <script>
+
 export default {
   data() {
     return {
       sessionStarted: false,
       auth_token: null,
-      messages: [
-        {"status":"SUCCESS","uri":"040213b14a02451","message":"Hello!","user":{"id":1,"username":"Prodip","email":"osaetindaniel@gmail.com","first_name":"","last_name":""}},
-        {"status":"SUCCESS","uri":"040213b14a02451","message":"Hey whatsup! i dey","user":{"id":2,"username":"daniel","email":"","first_name":"","last_name":""}}
-      ]
+      username: null,
+      messages: [],
+      message: ''
     };
   },
   created() {
     this.username = localStorage.getItem("username");
     this.auth_token = localStorage.getItem("authToken");
-    // console.log(localStorage)
   },
   methods: {
     startChatSession() {
@@ -75,15 +73,12 @@ export default {
     },
 
     startChatSession() {
-      console.log(this.auth_token);
-      console.log(this.username)
       let options = {
         method: "POST",
         headers: {
           "Content-Type": "application/json;charset=utf-8",
           Authorization: `Token ${this.auth_token}`,
         },
-        body: JSON.stringify(this.locationData),
       };
       fetch("http://localhost:8000/api/chats/", options)
         .then((result) => result.json())
@@ -93,6 +88,26 @@ export default {
           this.$router.push(`/chats/${data.uri}`);
         });
     },
+    postMessage() {
+      const data = {
+        message: this.message
+      }
+      console.log(data)
+      let options = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+          Authorization: `Token ${this.auth_token}`,
+        },
+        body: JSON.stringify(data)
+      };
+      fetch(`http://localhost:8000/api/chats/${this.$route.params.uri}/messages/`, options)
+      .then((result) => result.json())
+      .then((data) => {
+        this.messages.push(data)
+        this.message = ''
+      })
+    }
   },
 };
 </script>
