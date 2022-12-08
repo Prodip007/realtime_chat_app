@@ -42,6 +42,7 @@ export default {
   methods: {
     logOut() {
       localStorage.removeItem("authToken");
+      localStorage.removeItem("username");
       this.$router.go()
       this.$router.push("/auth");
     },

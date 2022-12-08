@@ -87,14 +87,14 @@ export default {
         body: JSON.stringify(credentials),
       };
 
-      fetch("http://localhost:8000/auth/users/", options).then((result) =>
+      fetch("http://localhost:8000/auth/users/", options)
+      .then((result) => {
         alert("Your account has been created. You will be signed in automatically")
+        this.signIn();
+      }
       );
-      this.signIn();
     },
     signIn() {
-      console.log("Sign In");
-
       let credentials = {
         username: this.username,
         password: this.password,
@@ -113,11 +113,13 @@ export default {
         .then((data) => {
           localStorage.setItem("authToken", data.auth_token);
           localStorage.setItem("username", this.username);
-          console.log("LocalStorage");
         })
         .then((data) => {
-          this.$router.push("chats/");
-          console.log("gets pushed");
+          if(localStorage.authToken != "undefined") {
+            this.$router.push("chats/");
+          } else {
+            alert("Credentials are not accurate", data)
+          }
         });
     },
   },

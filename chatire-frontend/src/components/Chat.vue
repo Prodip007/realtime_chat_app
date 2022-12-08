@@ -67,12 +67,12 @@ export default {
     this.auth_token = localStorage.getItem("authToken");
   },
   methods: {
+    // startChatSession() {
+    //   this.$router.push("/chats/chat_url/");
+    // },
+    
     startChatSession() {
       this.sessionStarted = true;
-      this.$router.push("/chats/chat_url/");
-    },
-
-    startChatSession() {
       let options = {
         method: "POST",
         headers: {
@@ -83,7 +83,6 @@ export default {
       fetch("http://localhost:8000/api/chats/", options)
         .then((result) => result.json())
         .then((data) => {
-          console.log("A new session has been created");
           this.sessionStarted = true;
           this.$router.push(`/chats/${data.uri}`);
         });
