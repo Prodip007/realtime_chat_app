@@ -54,3 +54,4 @@ class ChatSessionMember(TrackableDateModel):
     """Store all users in a data session"""
     chat_session = models.ForeignKey(ChatSession, related_name='members', on_delete=models.PROTECT)
     user = models.ForeignKey(User, on_delete=models.PROTECT)
+    
