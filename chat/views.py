@@ -88,7 +88,10 @@ class ChatSessionMessageView(APIView):
         user = request.user
         chat_session = ChatSession.objects.get(uri=uri)
 
-        ChatSessionMessage.objects.create(user=user, chat_session=chat_session, message=message)
+        chat_session_message = ChatSessionMessage.objects.create(
+            user=user, chat_session=chat_session, message=message
+        )
+
 
 
         notif_args = {

@@ -64,6 +64,14 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+# Celery settings
+CELERY_TASK_ALWAYS_EAGER = True
+
+# notifications settings
+NOTIFICATIONS_CHANNELS = {
+   'websocket': 'chat.channels.BroadCastWebSocketChannel'
+}
+
 CORS_ALLOW_ALL_ORIGINS = True
 
 ROOT_URLCONF = 'chatire.urls'
