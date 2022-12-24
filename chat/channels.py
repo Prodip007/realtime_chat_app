@@ -24,3 +24,14 @@ class BroadCastWebSocketChannel(BaseNotificationChannel):
         extra_data = self.notification_kwargs['extra_data ']
 
         return dump(extra_data['message'])
+
+    def notify(self, message):
+        """put the message of the RabbitMQ queue."""
+        connection, channel = self._connect()
+
+        uri = self.notification_kwargs['extra_data']['uri']
+
+        channel.exchange_declare(exchange=uri, exchange_type='fanout')
+        channel.basic_publish(exchange=uri, routing_key='', body=message)
+
+        connection.close()
