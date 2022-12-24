@@ -18,3 +18,9 @@ class BroadCastWebSocketChannel(BaseNotificationChannel):
         channel = connection.channel()
 
         return connection, channel
+
+    def construct_message(self):
+        """Construct the message to be sent."""
+        extra_data = self.notification_kwargs['extra_data ']
+
+        return dump(extra_data['message'])
