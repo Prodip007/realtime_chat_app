@@ -65,7 +65,7 @@ MIDDLEWARE = [
 ]
 
 # Celery settings
-CELERY_TASK_ALWAYS_EAGER = True
+CELERY_TASK_ALWAYS_EAGER = False
 
 # notifications settings
 NOTIFICATIONS_CHANNELS = {
