@@ -1,1 +1,2 @@
 Don't know why notifications.signals is not found
+Trying to add the github repo rather than using pip

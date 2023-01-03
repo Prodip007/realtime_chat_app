@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import permissions
 
-# from notifications.signals import notify
+from notifications.signals import notify
 
 from notifications import *
 
@@ -106,9 +106,9 @@ class ChatSessionMessageView(APIView):
 
         }
 
-        # notify.send(
-        #     sender=self.__class__, **notif_args, channels=['websocket']
-        # )
+        notify.send(
+            sender=self.__class__, **notif_args, channels=['websocket']
+        )
 
 
         
