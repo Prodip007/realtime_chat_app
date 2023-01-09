@@ -58,6 +58,71 @@ class ChatSessionView(APIView):
             'user': deserialize_user(user)
         })
 
+################## Checking this bit################
+
+# class ChatSessionMessageView(APIView):
+#     """Create/Get chat session messages"""
+
+#     permission_classes = (permissions.IsAuthenticated,)
+
+#     def get(self, request, *args, **kwargs):
+#         """Return all the messages in a chat session"""
+
+#         uri = kwargs['uri']
+
+#         chat_session = ChatSession.objects.get(uri=uri)
+#         messages = [chat_session_message.to_json() for chat_session_message in chat_session.messages.all()]
+
+#         return Response({
+#             'id': chat_session.id,
+#             'uri': chat_session.uri,
+#             'messages': messages
+#         })
+
+#     def post(self, request, *args, **kwargs):
+#         """Create a new message in a chat session"""
+
+#         uri = kwargs['uri']
+
+#         message = request.data['message']
+
+#         user = request.user
+#         chat_session = ChatSession.objects.get(uri=uri)
+
+#         chat_session_message = ChatSessionMessage.objects.create(
+#             user=user, chat_session=chat_session, message=message
+#         )
+
+
+
+#         notif_args = {
+#             'source': user,
+#             'source_display_name': user.get_full_name(),
+#             'category': 'chat',
+#             'action': 'Sent',
+#             'obj': chat_session_message.id,
+#             'short_description': 'You a new message', 
+#             'silent': True,
+#             'extra_data': {'uri': chat_session.uri}
+
+#         }
+
+#         notify.send(
+#             sender=self.__class__, **notif_args, channels=['websocket']
+#         )
+
+
+        
+
+#         return Response({
+#             'status': 'SUCCESS',
+#             'uri': uri,
+#             'message': message,
+#             'user': deserialize_user(user)
+#         })
+
+
+
 
 class ChatSessionMessageView(APIView):
     """Create/Get chat session messages"""
@@ -79,10 +144,8 @@ class ChatSessionMessageView(APIView):
         })
 
     def post(self, request, *args, **kwargs):
-        """Create a new message in a chat session"""
-
+        """create a new message in a chat session."""
         uri = kwargs['uri']
-
         message = request.data['message']
 
         user = request.user
@@ -92,30 +155,24 @@ class ChatSessionMessageView(APIView):
             user=user, chat_session=chat_session, message=message
         )
 
-
-
         notif_args = {
             'source': user,
             'source_display_name': user.get_full_name(),
-            'category': 'chat',
-            'action': 'Sent',
+            'category': 'chat', 'action': 'Sent',
             'obj': chat_session_message.id,
-            'short_description': 'You a new message', 
-            'silent': True,
-            'extra_data': {'uri': chat_session.uri}
-
+            'short_description': 'You a new message', 'silent': True,
+            # 'extra_data': {'uri': chat_session.uri}
+            'extra_data': {
+                'uri': chat_session.uri,
+                'message': message,
+                'user': deserialize_user(user),
+             }
         }
-
         notify.send(
             sender=self.__class__, **notif_args, channels=['websocket']
         )
 
-
-        
-
-        return Response({
-            'status': 'SUCCESS',
-            'uri': uri,
-            'message': message,
+        return Response ({
+            'status': 'SUCCESS', 'uri': chat_session.uri, 'message': message,
             'user': deserialize_user(user)
         })

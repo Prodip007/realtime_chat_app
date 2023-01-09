@@ -43,10 +43,12 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'djoser',
     "corsheaders",
-    'notifications',
+    
 
     # My apps
-    'chat'
+    'chat',
+
+    'notifications',
     
 ]
 
@@ -65,7 +67,7 @@ MIDDLEWARE = [
 ]
 
 # Celery settings
-CELERY_TASK_ALWAYS_EAGER = False
+CELERY_TASK_ALWAYS_EAGER = True
 
 # notifications settings
 NOTIFICATIONS_CHANNELS = {
